@@ -88,8 +88,8 @@ st.markdown("## 100th Monkey")
 left, right = st.columns([1, 2])
 
 with left:
-    near_word = st.text_input("Near word", "Qxprgtsdwxfs")
-    far_word  = st.text_input("Far word", "Chana Golda")
+    near_word = st.text_input("Near word", "Close up")
+    far_word  = st.text_input("Far word", "Far away")
 
     # ---- BASE PRESET (Close emphasis) ----
     params = {
