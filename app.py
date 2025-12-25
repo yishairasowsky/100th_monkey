@@ -112,15 +112,15 @@ with left:
     far_word = st.text_input("Far word (seen from afar)", "Chana Golda")
 
     preset = st.radio(
-        "Viewing mode",
-        [
-            "Balanced (recommended)",
-            "Far emphasis",
-            "Close emphasis",
-            "Dreamy"
-        ],
-        index=0
-    )
+    "Viewing mode",
+    [
+        "Close emphasis (recommended)",
+        "Balanced",
+        "Far emphasis",
+        "Dreamy"
+    ],
+    index=0
+)
 
     st.caption("Tip: step back 2–3 meters from your screen.")
 
