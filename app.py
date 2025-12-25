@@ -7,9 +7,6 @@ from scipy.ndimage import gaussian_filter
 W, H = 1400, 300
 FONT_SIZE = 200
 
-FONT_NEAR = "DejaVuSans.ttf"
-FONT_FAR  = "DejaVuSans-Bold.ttf"
-
 # ---------- BASE PERCEPTUAL PARAMETERS (YOUR GOOD DEFAULTS) ----------
 BG_GRAY = 0.9
 
@@ -28,14 +25,17 @@ BG_SCALES          = [20.0, 60.0, 160.0]
 BG_WEIGHTS         = [0.4, 0.35, 0.25]
 
 # ---------- RENDER ----------
-def render(word, font_path):
+def render(word, font_path=None):
     img = Image.new("L", (W, H), 255)
     d = ImageDraw.Draw(img)
 
+    # HARD SAFE FONT (never crashes)
     try:
-        f = ImageFont.truetype(font_path, FONT_SIZE)
-    except OSError:
-        # absolute fallback – NEVER fails
+        if font_path:
+            f = ImageFont.truetype(font_path, FONT_SIZE)
+        else:
+            raise OSError
+    except Exception:
         f = ImageFont.load_default()
 
     bbox = d.textbbox((0, 0), word, font=f)
@@ -53,8 +53,8 @@ def generate_image(
     far_strength,
     far_blur
 ):
-    near_img = render(near_word, FONT_NEAR)
-    far_img  = render(far_word,  FONT_FAR)
+    near_img = render(near_word)
+    far_img  = render(far_word)
 
     # ---- CLOUDY BACKGROUND ----
     noise = np.random.randn(H, W)
