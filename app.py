@@ -93,11 +93,11 @@ with left:
 
     # ---- BASE PRESET (Close emphasis) ----
     params = {
-        "near_strength": 0.85,
-        "near_distance_blur": 4.5,
-        "far_strength": 0.7,
-        "far_blur": 18.0,
-        "far_detail": 0.2,
+        "near_strength": 0.92,
+        "near_distance_blur": 4.0,
+        "far_strength": 0.94,
+        "far_blur": 20.0,
+        "far_detail": 0.50,
     }
 
     with st.expander("Fine tuning (for exploration)"):
