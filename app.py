@@ -25,22 +25,30 @@ BG_SCALES          = [20.0, 60.0, 160.0]
 BG_WEIGHTS         = [0.4, 0.35, 0.25]
 
 # ---------- RENDER ----------
-def render(word, font_path=None):
+def render(word):
     img = Image.new("L", (W, H), 255)
     d = ImageDraw.Draw(img)
 
-    # HARD SAFE FONT (never crashes)
-    try:
-        if font_path:
-            f = ImageFont.truetype(font_path, FONT_SIZE)
-        else:
-            raise OSError
-    except Exception:
-        f = ImageFont.load_default()
+    # Start big, scale down until it fits
+    max_size = int(H * 0.9)
+    min_size = 20
+    padding = int(W * 0.08)
 
-    bbox = d.textbbox((0, 0), word, font=f)
-    x = (W - (bbox[2] - bbox[0])) // 2
-    y = (H - (bbox[3] - bbox[1])) // 2
+    for size in range(max_size, min_size, -4):
+        try:
+            f = ImageFont.truetype("DejaVuSans-Bold.ttf", size)
+        except Exception:
+            f = ImageFont.load_default()
+
+        bbox = d.textbbox((0, 0), word, font=f)
+        text_w = bbox[2] - bbox[0]
+        text_h = bbox[3] - bbox[1]
+
+        if text_w < (W - padding):
+            break
+
+    x = (W - text_w) // 2
+    y = (H - text_h) // 2
     d.text((x, y), word, 0, font=f)
 
     return np.array(img) / 255.0
