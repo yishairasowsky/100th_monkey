@@ -22,7 +22,12 @@ NEAR_PERSISTENCE   = 0.75
 
 FAR_BLUR_SIGMA     = 14.0
 FAR_INK_STRENGTH   = 0.8
-FAR_DETAIL_BOOST   = 0.3
+# FAR_DETAIL_BOOST   = 0.3
+far_detail_boost = st.slider(
+    "Far detail boost",
+    0.0, 0.5, 0.25, 0.05
+)
+
 FAR_SUPPRESSION    = 0.6
 
 BG_CLOUD_STRENGTH  = 0.15
@@ -96,8 +101,8 @@ def generate_image(
     far_mid = gaussian_filter(far_base, 4.0) - gaussian_filter(far_base, 10.0)
     far_mid = np.clip(far_mid, 0, 1)
 
-    far_ink = far_strength * FAR_SUPPRESSION * (
-        far_base + FAR_DETAIL_BOOST * far_mid
+    far_ink = far_strength * (
+        far_base + far_detail_boost * far_mid
     )
 
     out = np.clip(bg - (near_ink + far_ink), 0, 1)
