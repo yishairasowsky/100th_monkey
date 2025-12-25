@@ -12,7 +12,12 @@ BG_GRAY = 0.9
 
 NEAR_EDGE_STRENGTH = 0.7
 NEAR_EDGE_BLUR     = 2.0
-NEAR_DISTANCE_BLUR = 5.0
+# NEAR_DISTANCE_BLUR = 5.0
+near_distance_blur = st.slider(
+    "Near distance blur",
+    2.0, 10.0, 5.0, 0.5
+)
+
 NEAR_PERSISTENCE   = 0.75
 
 FAR_BLUR_SIGMA     = 14.0
@@ -78,7 +83,8 @@ def generate_image(
         near_img - gaussian_filter(near_img, NEAR_EDGE_BLUR),
         0, 1
     )
-    near_edges_blurred = gaussian_filter(near_edges, NEAR_DISTANCE_BLUR)
+    # near_edges_blurred = gaussian_filter(near_edges, NEAR_DISTANCE_BLUR)
+    near_edges_blurred = gaussian_filter(near_edges, near_distance_blur)
 
     near_ink = near_strength * (
         NEAR_PERSISTENCE * near_edges +
