@@ -7,8 +7,8 @@ from scipy.ndimage import gaussian_filter
 W, H = 1400, 300
 FONT_SIZE = 200
 
-FONT_NEAR = "/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf"
-FONT_FAR  = "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf"
+FONT_NEAR = "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"
+FONT_FAR  = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
 
 # ---------- BASE PERCEPTUAL PARAMETERS (YOUR GOOD DEFAULTS) ----------
 BG_GRAY = 0.9
