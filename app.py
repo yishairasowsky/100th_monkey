@@ -7,8 +7,8 @@ from scipy.ndimage import gaussian_filter
 W, H = 1400, 300
 FONT_SIZE = 200
 
-FONT_NEAR = "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"
-FONT_FAR  = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
+FONT_NEAR = "DejaVuSans.ttf"
+FONT_FAR  = "DejaVuSans-Bold.ttf"
 
 # ---------- BASE PERCEPTUAL PARAMETERS (YOUR GOOD DEFAULTS) ----------
 BG_GRAY = 0.9
@@ -31,11 +31,18 @@ BG_WEIGHTS         = [0.4, 0.35, 0.25]
 def render(word, font_path):
     img = Image.new("L", (W, H), 255)
     d = ImageDraw.Draw(img)
-    f = ImageFont.truetype(font_path, FONT_SIZE)
+
+    try:
+        f = ImageFont.truetype(font_path, FONT_SIZE)
+    except OSError:
+        # absolute fallback – NEVER fails
+        f = ImageFont.load_default()
+
     bbox = d.textbbox((0, 0), word, font=f)
     x = (W - (bbox[2] - bbox[0])) // 2
     y = (H - (bbox[3] - bbox[1])) // 2
     d.text((x, y), word, 0, font=f)
+
     return np.array(img) / 255.0
 
 # ---------- IMAGE GENERATION ----------
