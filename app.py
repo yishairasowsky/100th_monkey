@@ -71,7 +71,7 @@ def generate_image(near_word, far_word, params):
     )
 
     # ---- FAR WORD ----
-    far_base = 1 - gaussian_filter(far_img, params["far_blur"])
+    far_base = 1.0 - gaussian_filter(far_img, params["far_blur"])
     far_mid = gaussian_filter(far_base, 4.0) - gaussian_filter(far_base, 10.0)
     far_mid = np.clip(far_mid, 0, 1)
 
@@ -95,9 +95,9 @@ with left:
     params = {
         "near_strength": 0.92,
         "near_distance_blur": 4.0,
-        "far_strength": 0.94,
-        "far_blur": 20.0,
-        "far_detail": 0.50,
+        "far_strength": 0.8,
+        "far_blur": 25.0,
+        "far_detail": 1.0,
     }
 
     with st.expander("Fine tuning (for exploration)"):
