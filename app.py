@@ -5,6 +5,27 @@ from scipy.ndimage import gaussian_filter
 
 # ================== PAGE ==================
 st.set_page_config(layout="wide")
+st.markdown("""
+<style>
+/* Make the left control column scrollable */
+div[data-testid="column"]:nth-of-type(1) {
+    max-height: 85vh;
+    overflow-y: auto;
+    padding-right: 8px;
+}
+
+/* Reduce slider vertical padding */
+div[data-testid="stSlider"] {
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+}
+
+/* Reduce label spacing */
+label {
+    margin-bottom: 0.1rem !important;
+}
+</style>
+""", unsafe_allow_html=True)
 
 # ================== CANVAS ==================
 W, H = 1400, 360
@@ -58,20 +79,17 @@ def generate_image(near_word, far_word, params):
     bg = np.clip(BG_GRAY + BG_CLOUD_STRENGTH * clouds, 0, 1)
 
     # ---- NEAR WORD ----
-    near_edges = np.clip(
-        near_img - gaussian_filter(near_img, 2.0),
-        0, 1
-    )
+    edges = near_img - gaussian_filter(near_img, 1.5)
+    near_edges = np.clip(edges, 0, 1)
+    near_edges = gaussian_filter(near_edges, 0.8)
     near_edges_blurred = gaussian_filter(
         near_edges, params["near_distance_blur"]
     )
 
-    near_ink = params["near_strength"] * (
-        0.75 * near_edges + 0.25 * near_edges_blurred
-    )
+    near_ink = params["near_strength"] * near_edges
 
     # ---- FAR WORD ----
-    far_base = 1 - gaussian_filter(far_img, params["far_blur"])
+    far_base = gaussian_filter(1 - far_img, params["far_blur"])
     far_mid = gaussian_filter(far_base, 4.0) - gaussian_filter(far_base, 10.0)
     far_mid = np.clip(far_mid, 0, 1)
 
@@ -121,4 +139,4 @@ with left:
 
 with right:
     img = generate_image(near_word, far_word, params)
-    st.image(img, use_column_width=True)
+    st.image(img, use_column_width=True, clamp=True)
